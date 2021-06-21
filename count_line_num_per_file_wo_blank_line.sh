@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ $# -ne 1 ]; then
     echo "対象のディレクトリを指定してください。"
@@ -32,16 +32,9 @@ fi
 find "${TARGET_DIR_PATH%/}/" -type f 2>/dev/null | while read -r FILE_PATH
 do
 
-    TEMP_FILE_PATH="${FILE_PATH}_tmp"
-    cp "${FILE_PATH}" "${TEMP_FILE_PATH}"
-    
-    sed -i '/^$/d' "${TEMP_FILE_PATH}" 
-    
-    LINE_NUM=`cat "${TEMP_FILE_PATH}" | wc -l`
+    LINE_NUM=`cat "${FILE_PATH}" | nkf -w | grep -v -e '^\s*$' | wc -l`
     
     echo "${FILE_PATH} ${LINE_NUM}"
-    
-    rm -f "${TEMP_FILE_PATH}"
 done
 
 exit $?
