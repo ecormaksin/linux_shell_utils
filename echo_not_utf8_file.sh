@@ -29,8 +29,10 @@ else
     exit 1
 fi
 
-find "${TARGET_DIR_PATH%/}/" -type f 2>/dev/null | grep -v -E "/(\.svn|\.gradle|\.settings|\.apt_generated|\.idea|\.vscode|build|node_modules|bin|vendor)/|\.(project|classpath|factorypath|gitignore|recovery-temp|iml|gitkeep|jar)$" | while read -r FILE_PATH
+find "${TARGET_DIR_PATH%/}/" -type f 2>/dev/null | grep -v -E "/(\.svn|\.gradle|\.settings|\.apt_generated|\.idea|\.vscode|build|node_modules|bin|vendor)/|/\.(project|classpath|factorypath|gitignore|recovery-temp|iml|gitkeep|jar)$|/(gradlew)$" | while read -r FILE_PATH
 do
+
+    echo "処理中... ${FILE_PATH}"
 
     FILE_TYPE=`file "${FILE_PATH}"`
     echo "${FILE_TYPE}" | grep " text " >/dev/null
@@ -43,7 +45,7 @@ do
         continue
     fi
 
-    echo "${FILE_PATH}"
+    echo "【対象】${FILE_PATH}: ${FILE_ENCODING}"
 done
 
 exit $?
